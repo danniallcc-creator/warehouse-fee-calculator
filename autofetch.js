@@ -63,9 +63,11 @@ function extractFromHtml(htmlText) {
 
     // Search for dimension patterns: LxWxH
     var dimPats = [
-        // [PRIMARY] Alibaba exact: title="Single package size" → next title="120X70X24 cm"
+        // [PRIMARY] Alibaba JSON data: "attribute":"Single package size","value":"55.2X26.7X7.8 cm"
+        /Single\s+package\s+size[^}]*?value[^:]*:\s*["'](\d+(?:\.\d+)?\s*[xX\u00d7*]\s*\d+(?:\.\d+)?\s*[xX\u00d7*]\s*\d+(?:\.\d+)?\s*(?:cm|CM)?)/i,
+        // [PRIMARY] Alibaba DOM: title="Single package size" → adjacent title="120X70X24 cm"
         /Single\s+package\s+size[^"]*"[^>]*>.*?title="([^"]+)"/i,
-        // Generic Alibaba: label containing "package size" followed by value in title attr
+        // Generic: label containing "package size" followed by value
         /(?:Package\s+size|Carton\s+size)[^:]*[:\s]*([^<"\n]+)/i,
         /(?:Dimension|Size|Measurement)[^:]*[:\s]*([^<"\n]*\d+\s*[xX\u00d7*]\s*\d+\s*[xX\u00d7*]\s*\d+[^<"\n]*)/i
     ];
@@ -104,7 +106,9 @@ function extractFromHtml(htmlText) {
 
     // Search for weight - multiple strategies for Alibaba pages
     var weightPats = [
-        // [PRIMARY] Alibaba exact: title="Single gross weight" → next title="XX.XXX kg"
+        // [PRIMARY] Alibaba JSON data: "attribute":"Single gross weight","value":"1.843 kg"
+        /Single\s+gross\s+weight[^}]*?value[^:]*:\s*["'](\d+(?:\.\d+)?)\s*kg/i,
+        // [PRIMARY] Alibaba DOM: title="Single gross weight" → adjacent title="XX.XXX kg"
         /Single\s+gross\s+weight[^"]*"[^>]*>.*?title="(\d+(?:\.\d+)?)\s*kg"/i,
         // Alibaba specific: title="Single gross weight" followed by title="XX.XXX kg"
         /Single\s+gross\s+weight[^"]*"[^"]*"[^"]*title="(\d+(?:\.\d+)?)\s*kg"/i,

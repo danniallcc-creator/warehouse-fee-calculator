@@ -291,7 +291,7 @@
                 <p style="color:#94a3b8;font-size:13px;margin-bottom:12px;">
                     将下方按钮拖拽到浏览器书签栏，然后在阿里国际站商品页点击即可自动提取尺寸重量并跳转到本计算器。
                 </p>
-                <a class="bookmarklet-btn-wrapper" href="javascript:void(function(){var U='https://danniallcc-creator.github.io/warehouse-fee-calculator/';var d=document;var n=(d.querySelector('h1')||d.querySelector('[class*=title]')||{}).textContent||'';n=n.trim().substring(0,80);var dims=null,wt=null;var mods=d.querySelectorAll('[data-testid=module-attribute-group]');for(var _i=0;_i<mods.length;_i++){var _m=mods[_i];var _l=_m.querySelector('[title=Single package size]');if(_l&&!dims){var _s=_l;while(_s=_s.nextElementSibling){var _t=_s.getAttribute('title')||'';var _v=_t.match(/(\d+(?:\.\d+)?)\s*[xX\u00d7*]\s*(\d+(?:\.\d+)?)\s*[xX\u00d7*]\s*(\d+(?:\.\d+)?)/);if(_v){var _a=[+_v[1],+_v[2],+_v[3]];_a.sort(function(a,b){return b-a});dims=_a;break}}if(!dims){var _p=_m.querySelector('[title*=X][title*=cm i],[title*=x][title*=cm i]');if(_p){var _v2=(_p.getAttribute('title')||'').match(/(\d+(?:\.\d+)?)\s*[xX\u00d7*]\s*(\d+(?:\.\d+)?)\s*[xX\u00d7*]\s*(\d+(?:\.\d+)?)/);if(_v2){var _b=[+_v2[1],+_v2[2],+_v2[3]];_b.sort(function(a,b){return b-a});dims=_b}}}var _w=_m.querySelector('[title=Single gross weight]');if(_w&&!wt){var _s2=_w;while(_s2=_s2.nextElementSibling){var _t2=_s2.getAttribute('title')||'';var _wm=_t2.match(/(\d+(?:\.\d+)?)\s*kg/i);if(_wm){var _ww=+_wm[1];if(_ww>.01&&_ww<500){wt=_ww;break}}}}}if(!dims){var a=d.querySelectorAll('[title]');a.forEach(function(e){if(!dims){var t=e.getAttribute('title');var m=t.match(/(\d+(?:\.\d+)?)\s*[xX\u00d7*]\s*(\d+(?:\.\d+)?)\s*[xX\u00d7*]\s*(\d+(?:\.\d+)?)\s*(?:cm|CM)?/i);if(m){var v=[+m[1],+m[2],+m[3]];v.sort(function(a,b){return b-a});dims=v}}})}if(!wt){var t2=d.body.innerText;var m4=t2.match(/(\d+\.\d{1,3})\s*kg/gi);if(m4){for(var i=0;i<m4.length;i++){var wm=m4[i].match(/(\d+\.\d+)/);if(wm){var w2=+wm[1];if(w2>.5&&w2<200){wt=w2;break}}}}}var p=[];if(n)p.push('name='+encodeURIComponent(n));if(dims){p.push('l='+dims[0]);p.push('w='+dims[1]);p.push('h='+dims[2])}if(wt)p.push('wt='+wt);if(p.length>1)window.open(U+'?'+p.join('&'),'_blank');else alert('\u672a\u627e\u5230\u5c3a\u5bf8/\u91cd\u91cf\uff0c\u8bf7\u786e\u8ba4\u5728\u963f\u91cc\u56fd\u9645\u7ad9\u5546\u54c1\u8be6\u60c5\u9875\u3002')}})()">
+                <a class="bookmarklet-btn-wrapper" href="javascript:void(function(){var U='https://danniallcc-creator.github.io/warehouse-fee-calculator/';var d=document;var n=(d.querySelector('h1')||d.querySelector('[class*=title]')||{}).textContent||'';n=n.trim().substring(0,80);var dims=null,wt=null;var h=d.documentElement.innerHTML||'';var dm1=h.match(/[\x22']Single package size[\x22'][^\}]{0,30}?value[^:]*:[\s]*[\x22']([\d.]+)\s*[xX\u00d7*]([\d.]+)\s*[xX\u00d7*]([\d.]+)/i);if(dm1){dims=[+dm1[1],+dm1[2],+dm1[3]];dims.sort(function(a,b){return b-a})}var wt1=h.match(/[\x22']Single gross weight[\x22'][^\}]{0,30}?value[^:]*:[\s]*[\x22']([\d.]+)\s*kg/i);if(wt1){var w1=+wt1[1];if(w1>.01&&w1<500)wt=w1}if(!dims||!wt){var mods=d.querySelectorAll('[data-testid=module-attribute-group]');for(var _i=0;_i<mods.length;_i++){var _m=mods[_i];if(!dims){var _l=_m.querySelector('[title=Single package size]');if(_l){var _s=_l;while(_s=_s.nextElementSibling){var _t=_s.getAttribute('title')||'';var _v=_t.match(/(\d+(?:\.\d+)?)\s*[xX\u00d7*]\s*(\d+(?:\.\d+)?)\s*[xX\u00d7*]\s*(\d+(?:\.\d+)?)/);if(_v){dims=[+_v[1],+_v[2],+_v[3]];dims.sort(function(a,b){return b-a});break}}}}if(!wt){var _w=_m.querySelector('[title=Single gross weight]');if(_w){var _s2=_w;while(_s2=_s2.nextElementSibling){var _t2=_s2.getAttribute('title')||'';var _wm=_t2.match(/(\d+(?:\.\d+)?)\s*kg/i);if(_wm){var _ww=+_wm[1];if(_ww>.01&&_ww<500){wt=_ww;break}}}}}}if(!dims){var a=d.querySelectorAll('[title]');a.forEach(function(e){if(!dims){var t=e.getAttribute('title');var m=t.match(/(\d+(?:\.\d+)?)\s*[xX\u00d7*]\s*(\d+(?:\.\d+)?)\s*[xX\u00d7*]\s*(\d+(?:\.\d+)?)\s*(?:cm|CM)?/i);if(m){var v=[+m[1],+m[2],+m[3]];v.sort(function(a,b){return b-a});dims=v}}})}if(!wt){var txt=d.body.innerText||'';var m4=txt.match(/(\d+\.\d{1,3})\s*kg/gi);if(m4){for(var i=0;i<m4.length;i++){var wm=m4[i].match(/(\d+\.\d+)/);if(wm){var w2=+wm[1];if(w2>.5&&w2<200){wt=w2;break}}}}}var p=[];if(n)p.push('name='+encodeURIComponent(n));if(dims){p.push('l='+dims[0]);p.push('w='+dims[1]);p.push('h='+dims[2])}if(wt)p.push('wt='+wt);if(p.length>1)window.open(U+'?'+p.join('&'),'_blank');else alert('\u672a\u627e\u5230\u5c3a\u5bf8/\u91cd\u91cf\uff0c\u8bf7\u786e\u8ba4\u5728\u963f\u91cc\u56fd\u9645\u7ad9\u5546\u54c1\u8be6\u60c5\u9875\u3002')}})()">
                     提取商品规格
                 </a>
                 <div class="bookmarklet-hint">
@@ -734,9 +734,11 @@ function extractFromHtml(htmlText) {
 
     // Search for dimension patterns: LxWxH
     var dimPats = [
-        // [PRIMARY] Alibaba exact: title="Single package size" → next title="120X70X24 cm"
+        // [PRIMARY] Alibaba JSON data: "attribute":"Single package size","value":"55.2X26.7X7.8 cm"
+        /Single\s+package\s+size[^}]*?value[^:]*:\s*["'](\d+(?:\.\d+)?\s*[xX\u00d7*]\s*\d+(?:\.\d+)?\s*[xX\u00d7*]\s*\d+(?:\.\d+)?\s*(?:cm|CM)?)/i,
+        // [PRIMARY] Alibaba DOM: title="Single package size" → adjacent title="120X70X24 cm"
         /Single\s+package\s+size[^"]*"[^>]*>.*?title="([^"]+)"/i,
-        // Generic Alibaba: label containing "package size" followed by value in title attr
+        // Generic: label containing "package size" followed by value
         /(?:Package\s+size|Carton\s+size)[^:]*[:\s]*([^<"\n]+)/i,
         /(?:Dimension|Size|Measurement)[^:]*[:\s]*([^<"\n]*\d+\s*[xX\u00d7*]\s*\d+\s*[xX\u00d7*]\s*\d+[^<"\n]*)/i
     ];
@@ -775,7 +777,9 @@ function extractFromHtml(htmlText) {
 
     // Search for weight - multiple strategies for Alibaba pages
     var weightPats = [
-        // [PRIMARY] Alibaba exact: title="Single gross weight" → next title="XX.XXX kg"
+        // [PRIMARY] Alibaba JSON data: "attribute":"Single gross weight","value":"1.843 kg"
+        /Single\s+gross\s+weight[^}]*?value[^:]*:\s*["'](\d+(?:\.\d+)?)\s*kg/i,
+        // [PRIMARY] Alibaba DOM: title="Single gross weight" → adjacent title="XX.XXX kg"
         /Single\s+gross\s+weight[^"]*"[^>]*>.*?title="(\d+(?:\.\d+)?)\s*kg"/i,
         // Alibaba specific: title="Single gross weight" followed by title="XX.XXX kg"
         /Single\s+gross\s+weight[^"]*"[^"]*"[^"]*title="(\d+(?:\.\d+)?)\s*kg"/i,
