@@ -99,10 +99,20 @@ function extractFromHtml(htmlText) {
         }
     }
 
-    // Search for weight
+    // Search for weight - multiple strategies for Alibaba pages
     var weightPats = [
+        // Alibaba specific: title="Single gross weight" followed by title="XX.XXX kg"
+        /Single\s+gross\s+weight[^"]*"[^"]*"[^"]*title="(\d+(?:\.\d+)?)\s*kg"/i,
+        // Alibaba specific: gross weight in adjacent title attribute
+        /(?:gross\s+weight|Gross\s+weight)[^"]*"[^>]*>[^<]*<[^>]*title="(\d+(?:\.\d+)?)\s*kg"/i,
+        // Generic: "Single gross weight: XX kg" or "Gross weight: XX kg"
         /(?:Single\s+gross\s+weight|Gross\s+weight|Total\s+weight|Package\s+weight)[^:]*[:\s]*([^<"\n]*\d+(?:\.\d+)?\s*kg)/i,
-        /(?:Weight|WEIGHT)[^:]*[:\s]*([^<"\n]*\d+(?:\.\d+)?\s*kg)/i
+        // Generic: "Weight: XX kg" or "WEIGHT: XX kg"
+        /(?:Weight|WEIGHT)[^:]*[:\s]*([^<"\n]*\d+(?:\.\d+)?\s*kg)/i,
+        // title attribute with kg value (Alibaba format)
+        /title="(\d+\.\d{1,3})\s*kg"/i,
+        // Any "XX.XX kg" near weight/gross keywords
+        /(?:weight|gross|brutto)[^<]{0,50}(\d+(?:\.\d+)?)\s*kg/i
     ];
 
     for (var k = 0; k < weightPats.length; k++) {
@@ -214,16 +224,27 @@ function autoFillFields(data) {
         document.getElementById('productName').value = data.name.substring(0, 80);
     }
 
-    if (filled.length > 0) {
+    // Check what's missing
+    var missing = [];
+    if (!data.length) missing.push('尺寸(长×宽×高)');
+    if (!data.weight) missing.push('重量(kg)');
+
+    if (filled.length >= 4) {
         showFetchStatus(
-            '<strong>\u81ea\u52a8\u586b\u5145\u6210\u529f\uff01</strong> ' + filled.join(' | ') +
-            '<br>\u8bf7\u9009\u62e9\u4ed3\u5e93\u540e\u70b9\u51fb\u300c\u7acb\u5373\u6d4b\u7b97\u300d\u3002',
+            '<strong>自动填充成功！</strong> ' + filled.join(' | ') +
+            '<br>请选择仓库后点击「立即测算」。',
             'success'
+        );
+    } else if (filled.length > 0) {
+        showFetchStatus(
+            '<strong>部分填充成功：</strong> ' + filled.join(' | ') +
+            '<br><span style="color:#fcd34d">缺少：' + missing.join('、') + '</span>，请手动补充。',
+            'error'
         );
     } else {
         showFetchStatus(
-            '\u5df2\u6253\u5f00\u9875\u9762\u4f46\u672a\u8bc6\u522b\u5230\u5c3a\u5bf8/\u91cd\u91cf\u4fe1\u606f\uff0c\u8bf7\u624b\u52a8\u586b\u5199\u3002<br>' +
-            '\u63d0\u793a\uff1a\u4e5f\u53ef\u4f7f\u7528\u4e66\u7b7e\u5de5\u5177\u5728\u5546\u54c1\u9875\u4e00\u952e\u63d0\u53d6\u3002',
+            '已打开页面但未识别到尺寸和重量信息，请手动填写。<br>' +
+            '提示：也可使用书签工具在商品页一键提取（更可靠）。',
             'error'
         );
     }

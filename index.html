@@ -291,7 +291,7 @@
                 <p style="color:#94a3b8;font-size:13px;margin-bottom:12px;">
                     将下方按钮拖拽到浏览器书签栏，然后在阿里国际站商品页点击即可自动提取尺寸重量并跳转到本计算器。
                 </p>
-                <a class="bookmarklet-btn-wrapper" href="javascript:void(function(){var U='https://danniallcc-creator.github.io/warehouse-fee-calculator/';var d=document;var n=(d.querySelector('h1')||d.querySelector('[class*=title]')||{}).textContent||'';n=n.trim().substring(0,80);var a=d.querySelectorAll('[title]'),dims=null,wt=null;a.forEach(function(e){var t=e.getAttribute('title');if(!dims){var m=t.match(/(\d+(?:\.\d+)?)\s*[xX\u00d7*]\s*(\d+(?:\.\d+)?)\s*[xX\u00d7*]\s*(\d+(?:\.\d+)?)\s*(?:cm|CM)?/i);if(m){var v=[+m[1],+m[2],+m[3]];v.sort(function(a,b){return b-a});dims=v}}if(!wt){var m2=t.match(/(\d+(?:\.\d+)?)\s*kg/i);if(m2){var w=+m2[1];if(w>.01&&w<500)wt=w}}});if(!dims){var t2=d.body.innerText;var m3=t2.match(/(\d+(?:\.\d+)?)\s*[xX\u00d7*]\s*(\d+(?:\.\d+)?)\s*[xX\u00d7*]\s*(\d+(?:\.\d+)?)\s*cm/i);if(m3){var v2=[+m3[1],+m3[2],+m3[3]];v2.sort(function(a,b){return b-a});dims=v2}}if(!wt){var m4=d.body.innerText.match(/(\d+\.\d{1,3})\s*kg/i);if(m4){var w2=+m4[1];if(w2>.01&&w2<500)wt=w2}}var p=[];if(n)p.push('name='+encodeURIComponent(n));if(dims){p.push('l='+dims[0]);p.push('w='+dims[1]);p.push('h='+dims[2])}if(wt)p.push('wt='+wt);if(p.length>1)window.open(U+'?'+p.join('&'),'_blank');else alert('\u672a\u627e\u5230\u5c3a\u5bf8/\u91cd\u91cf\uff0c\u8bf7\u786e\u8ba4\u5728\u5546\u54c1\u8be6\u60c5\u9875')})();">
+                <a class="bookmarklet-btn-wrapper" href="javascript:void(function(){var U='https://danniallcc-creator.github.io/warehouse-fee-calculator/';var d=document;var n=(d.querySelector('h1')||d.querySelector('[class*=title]')||{}).textContent||'';n=n.trim().substring(0,80);var a=d.querySelectorAll('[title]'),dims=null,wt=null;a.forEach(function(e){var t=e.getAttribute('title');if(!dims){var m=t.match(/(\d+(?:\.\d+)?)\s*[xX\u00d7*]\s*(\d+(?:\.\d+)?)\s*[xX\u00d7*]\s*(\d+(?:\.\d+)?)\s*(?:cm|CM)?/i);if(m){var v=[+m[1],+m[2],+m[3]];v.sort(function(a,b){return b-a});dims=v}}if(!wt){var m2=t.match(/(\d+(?:\.\d+)?)\s*kg/i);if(m2){var w=+m2[1];if(w>.01&&w<500)wt=w}}});if(!wt){d.querySelectorAll('[data-testid*=eight]').forEach(function(e){if(!wt){var m=e.textContent.match(/(\d+(?:\.\d+)?)\s*kg/i);if(m){var w=+m[1];if(w>.01&&w<500)wt=w}}})}if(!wt){d.querySelectorAll('[title*=eight]').forEach(function(e){if(!wt){var m=e.getAttribute('title').match(/(\d+(?:\.\d+)?)\s*kg/i);if(m){var w=+m[1];if(w>.01&&w<500)wt=w}}})}if(!dims){var t2=d.body.innerText;var m3=t2.match(/(\d+(?:\.\d+)?)\s*[xX\u00d7*]\s*(\d+(?:\.\d+)?)\s*[xX\u00d7*]\s*(\d+(?:\.\d+)?)\s*cm/i);if(m3){var v2=[+m3[1],+m3[2],+m3[3]];v2.sort(function(a,b){return b-a});dims=v2}}if(!wt){var t3=d.body.innerText;var m4=t3.match(/(\d+\.\d{1,3})\s*kg/gi);if(m4){for(var i=0;i<m4.length;i++){var wm=m4[i].match(/(\d+\.\d+)/);if(wm){var w2=+wm[1];if(w2>.5&&w2<200){wt=w2;break}}}}}var p=[];if(n)p.push('name='+encodeURIComponent(n));if(dims){p.push('l='+dims[0]);p.push('w='+dims[1]);p.push('h='+dims[2])}if(wt)p.push('wt='+wt);var miss=[];if(!dims)miss.push('\u5c3a\u5bf8(\u957f\u00d7\u5bbd\u00d7\u9ad8)');if(!wt)miss.push('\u91cd\u91cf(kg)');if(miss.length>0){alert('\u672a\u627e\u5230: '+miss.join('\u3001')+'\u3002\u8bf7\u786e\u8ba4\u5728\u963f\u91cc\u56fd\u9645\u7ad9\u5546\u54c1\u8be6\u60c5\u9875\u3002');return}window.open(U+'?'+p.join('&'),'_blank')})();">
                     提取商品规格
                 </a>
                 <div class="bookmarklet-hint">
@@ -770,10 +770,20 @@ function extractFromHtml(htmlText) {
         }
     }
 
-    // Search for weight
+    // Search for weight - multiple strategies for Alibaba pages
     var weightPats = [
+        // Alibaba specific: title="Single gross weight" followed by title="XX.XXX kg"
+        /Single\s+gross\s+weight[^"]*"[^"]*"[^"]*title="(\d+(?:\.\d+)?)\s*kg"/i,
+        // Alibaba specific: gross weight in adjacent title attribute
+        /(?:gross\s+weight|Gross\s+weight)[^"]*"[^>]*>[^<]*<[^>]*title="(\d+(?:\.\d+)?)\s*kg"/i,
+        // Generic: "Single gross weight: XX kg" or "Gross weight: XX kg"
         /(?:Single\s+gross\s+weight|Gross\s+weight|Total\s+weight|Package\s+weight)[^:]*[:\s]*([^<"\n]*\d+(?:\.\d+)?\s*kg)/i,
-        /(?:Weight|WEIGHT)[^:]*[:\s]*([^<"\n]*\d+(?:\.\d+)?\s*kg)/i
+        // Generic: "Weight: XX kg" or "WEIGHT: XX kg"
+        /(?:Weight|WEIGHT)[^:]*[:\s]*([^<"\n]*\d+(?:\.\d+)?\s*kg)/i,
+        // title attribute with kg value (Alibaba format)
+        /title="(\d+\.\d{1,3})\s*kg"/i,
+        // Any "XX.XX kg" near weight/gross keywords
+        /(?:weight|gross|brutto)[^<]{0,50}(\d+(?:\.\d+)?)\s*kg/i
     ];
 
     for (var k = 0; k < weightPats.length; k++) {
@@ -885,20 +895,32 @@ function autoFillFields(data) {
         document.getElementById('productName').value = data.name.substring(0, 80);
     }
 
-    if (filled.length > 0) {
+    // Check what's missing
+    var missing = [];
+    if (!data.length) missing.push('尺寸(长×宽×高)');
+    if (!data.weight) missing.push('重量(kg)');
+
+    if (filled.length >= 4) {
         showFetchStatus(
-            '<strong>\u81ea\u52a8\u586b\u5145\u6210\u529f\uff01</strong> ' + filled.join(' | ') +
-            '<br>\u8bf7\u9009\u62e9\u4ed3\u5e93\u540e\u70b9\u51fb\u300c\u7acb\u5373\u6d4b\u7b97\u300d\u3002',
+            '<strong>自动填充成功！</strong> ' + filled.join(' | ') +
+            '<br>请选择仓库后点击「立即测算」。',
             'success'
+        );
+    } else if (filled.length > 0) {
+        showFetchStatus(
+            '<strong>部分填充成功：</strong> ' + filled.join(' | ') +
+            '<br><span style="color:#fcd34d">缺少：' + missing.join('、') + '</span>，请手动补充。',
+            'error'
         );
     } else {
         showFetchStatus(
-            '\u5df2\u6253\u5f00\u9875\u9762\u4f46\u672a\u8bc6\u522b\u5230\u5c3a\u5bf8/\u91cd\u91cf\u4fe1\u606f\uff0c\u8bf7\u624b\u52a8\u586b\u5199\u3002<br>' +
-            '\u63d0\u793a\uff1a\u4e5f\u53ef\u4f7f\u7528\u4e66\u7b7e\u5de5\u5177\u5728\u5546\u54c1\u9875\u4e00\u952e\u63d0\u53d6\u3002',
+            '已打开页面但未识别到尺寸和重量信息，请手动填写。<br>' +
+            '提示：也可使用书签工具在商品页一键提取（更可靠）。',
             'error'
         );
     }
 }
+
 
 
         function calculate() {
