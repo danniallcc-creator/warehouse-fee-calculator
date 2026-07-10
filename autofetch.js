@@ -63,7 +63,10 @@ function extractFromHtml(htmlText) {
 
     // Search for dimension patterns: LxWxH
     var dimPats = [
-        /(?:Single\s+package\s+size|Package\s+size|Carton\s+size)[^:]*[:\s]*([^<"\n]+)/i,
+        // [PRIMARY] Alibaba exact: title="Single package size" → next title="120X70X24 cm"
+        /Single\s+package\s+size[^"]*"[^>]*>.*?title="([^"]+)"/i,
+        // Generic Alibaba: label containing "package size" followed by value in title attr
+        /(?:Package\s+size|Carton\s+size)[^:]*[:\s]*([^<"\n]+)/i,
         /(?:Dimension|Size|Measurement)[^:]*[:\s]*([^<"\n]*\d+\s*[xX\u00d7*]\s*\d+\s*[xX\u00d7*]\s*\d+[^<"\n]*)/i
     ];
 
@@ -101,6 +104,8 @@ function extractFromHtml(htmlText) {
 
     // Search for weight - multiple strategies for Alibaba pages
     var weightPats = [
+        // [PRIMARY] Alibaba exact: title="Single gross weight" → next title="XX.XXX kg"
+        /Single\s+gross\s+weight[^"]*"[^>]*>.*?title="(\d+(?:\.\d+)?)\s*kg"/i,
         // Alibaba specific: title="Single gross weight" followed by title="XX.XXX kg"
         /Single\s+gross\s+weight[^"]*"[^"]*"[^"]*title="(\d+(?:\.\d+)?)\s*kg"/i,
         // Alibaba specific: gross weight in adjacent title attribute
